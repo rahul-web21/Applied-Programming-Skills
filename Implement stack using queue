@@ -1,51 +1,38 @@
-class MyQueue {
-    Stack<Integer> instack;
-    Stack<Integer> outstack;
+import java.util.LinkedList;
+import java.util.Queue;
 
+class MyStack {
 
-    public MyQueue() {
-        instack=new Stack<>();
-        outstack=new Stack<>();
+    Queue<Integer> q1;
+    Queue<Integer> q2;
 
+    public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
     }
     
     public void push(int x) {
-        instack.push (x);
+        q2.offer(x);
 
+        while (!q1.isEmpty()) {
+            q2.offer(q1.poll());
+        }
+
+        // swap queues
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
     }
     
     public int pop() {
-        moveIfNeeded();
-        return outstack.pop();
-
+        return q1.poll();
     }
     
-    public int peek() {
-        moveIfNeeded();
-        return outstack.peek();
-    
-        
+    public int top() {
+        return q1.peek();
     }
     
     public boolean empty() {
-        return instack.isEmpty() && outstack.isEmpty();
-
-        
-    }
-    private void moveIfNeeded(){
-        if (outstack.isEmpty()){
-            while(!instack.isEmpty())
-                outstack.push(instack.pop());
-        }
+        return q1.isEmpty();
     }
 }
-
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * MyQueue obj = new MyQueue();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.peek();
- * boolean param_4 = obj.empty();
- */
